@@ -1,0 +1,17 @@
+[package]
+name = "asyncio"
+version = "0.1.0"
+authors = ["Oussama Gammoudi"]
+
+build = "build.rs"
+links = "ws2_32"
+
+[dependencies]
+winapi = "*"
+kernel32-sys = "*"
+ws2_32-sys = "*"
+libc = "*"
+iocp = {git = "https://github.com/cyderize/rust-iocp.git"}
+
+[build-dependencies]
+winapi-build = "*"
