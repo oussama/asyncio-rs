@@ -4,8 +4,9 @@ Async IO for Rust
 Goal: Extend the standar library net module to provide async io with callback hell
 
 State
-* currently only for windows
-* TcpStream.read
+    currently only for windows
+    TcpStream.read
+
 Example:
 
     let mut stream = TcpStream::connect("127.0.0.1:8124").unwrap();
