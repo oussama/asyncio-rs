@@ -93,8 +93,14 @@ impl AsyncIO {
                         
                         // just to free it
                         let overlapped = unsafe { Box::<OVERLAPPED>::from_raw(status.overlapped) };
+                        //wsa_buf.len 
+                        // this will probably cause memory leak since Im not getting all the buffer but only the filled part
+                        let mut buf= unsafe { slice::from_raw_parts(wsa_buf.buf as *mut u8, status.byte_count as usize) };
+                        // will take care of the unused buffer space
+                        let unused_buf_ptr = (wsa_buf.buf as usize)+status.byte_count;
+                        let unused_buf_size = (wsa_buf.len as usize) - status.byte_count;
+                        let unused_buffer_chunk = unsafe { slice::from_raw_parts(unused_buf_ptr as *mut u8,unused_buf_size as usize) };
                         
-                        let mut buf= unsafe { slice::from_raw_parts(wsa_buf.buf as *mut u8,wsa_buf.len as usize) };
                         handler.0( buf);
                     
                     },
