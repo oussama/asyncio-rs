@@ -49,15 +49,14 @@ struct AsyncIO {
 impl AsyncIO {
 
     
-    pub fn new()->Option<Arc<Box<AsyncIO>>> {
+    pub fn new()->Option<Arc<AsyncIO>> {
         match iocp::IoCompletionPort::new(4)  {
             Ok(iocp) => {
                 let mut aio_bare =AsyncIO {
                     iocp:iocp,
                     handlers:Arc::new(Mutex::new(HashMap::new())),
                 };
-                let mut aio_boxed = Box::new(aio_bare );
-                let mut aio = Arc::new(aio_boxed);
+                let mut aio = Arc::new(aio_bare);
                 AsyncIO::init(aio.clone());
                 return Some(aio);
             },
@@ -74,7 +73,7 @@ impl AsyncIO {
 
     
     
-    fn init(aio:Arc<Box<AsyncIO>>){
+    fn init(aio:Arc<AsyncIO>){
     
 
         thread::spawn(move||{
@@ -171,7 +170,7 @@ fn simple_example() {
 
 	let mut aio = AsyncIO::new().unwrap();
 	aio.register(&stream);
-	stream.async_read(aio.deref(),|buf:&[u8]|{
+	stream.async_read(&aio,|buf:&[u8]|{
 		
 		let s = match str::from_utf8(buf) {
 			Ok(v) => {
