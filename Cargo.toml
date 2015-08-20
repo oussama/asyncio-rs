@@ -12,6 +12,11 @@ kernel32-sys = "*"
 ws2_32-sys = "*"
 libc = "*"
 iocp = {git = "https://github.com/cyderize/rust-iocp.git"}
+epoll = {git = "https://github.com/zorend/rust-epoll.git"}
 
 [build-dependencies]
 winapi-build = "*"
+
+[[test]]
+name = "test"
+path = "test/test.rs"
